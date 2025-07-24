@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}My Pickup Requests - Food Rescue{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-success mb-4">
+                <i class="bi bi-list-check"></i> My Pickup Requests
+            </h1>
+            
+            {% if pickup_requests %}
+                <div class="row">
+                    {% for request in pickup_requests %}
+                        <div class="col-lg-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">{{ request.donation.title }}</h5>
+                                        <span class="badge 
+                                            {% if request.status == 'pending' %}bg-warning
+                                            {% elif request.status == 'approved' %}bg-success
+                                            {% elif request.status == 'completed' %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ request.status|title }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted">{{ request.donation.description|truncatewords:20 }}</p>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <strong><i class="bi bi-box-seam"></i> Quantity:</strong>
+                                            <br><span class="text-muted">{{ request.donation.quantity }}</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong><i class="bi bi-geo-alt"></i> Location:</strong>
+                                            <br><span class="text-muted">{{ request.donation.zip_code }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <strong><i class="bi bi-calendar"></i> Pickup Date:</strong>
+                                            <br><span class="text-muted">{{ request.desired_date|date:"M d, Y" }}</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong><i class="bi bi-clock"></i> Time Slot:</strong>
+                                            <br><span class="text-muted">{{ request.get_desired_time_slot_display }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if request.message %}
+                                        <div class="mb-3">
+                                            <strong><i class="bi bi-chat"></i> Your Message:</strong>
+                                            <p class="text-muted mb-0">{{ request.message }}</p>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            <i class="bi bi-person"></i> Donor: {{ request.donation.donor.username }}
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock"></i> {{ request.created_at|date:"M d, Y" }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{% url 'donations:donation_detail' request.donation.pk %}" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-eye"></i> View Donation
+                                        </a>
+                                        {% if request.status == 'pending' %}
+                                            <span class="text-muted">Waiting for donor approval</span>
+                                        {% elif request.status == 'approved' %}
+                                            <span class="text-success">Ready for pickup!</span>
+                                        {% elif request.status == 'completed' %}
+                                            <span class="text-info">Pickup completed</span>
+                                        {% else %}
+                                            <span class="text-secondary">Request cancelled</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Pickup requests pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+                    <h3 class="text-muted">No pickup requests yet</h3>
+                    <p class="text-muted">You haven't requested any food pickups yet. Start browsing available donations!</p>
+                    <a href="{% url 'donations:donation_list' %}" class="btn btn-success btn-lg">
+                        <i class="bi bi-search"></i> Browse Donations
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

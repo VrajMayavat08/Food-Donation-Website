@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipient Profile - Food Rescue{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-check"></i> 
+                        {% if user.recipient %}Update{% else %}Create{% endif %} Recipient Profile
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">
+                                <i class="bi bi-person"></i> Full Name *
+                            </label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.contact_phone.id_for_label }}" class="form-label">
+                                        <i class="bi bi-telephone"></i> Phone Number
+                                    </label>
+                                    {{ form.contact_phone }}
+                                    {% if form.contact_phone.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.contact_phone.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.contact_email.id_for_label }}" class="form-label">
+                                        <i class="bi bi-envelope"></i> Email Address
+                                    </label>
+                                    {{ form.contact_email }}
+                                    {% if form.contact_email.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.contact_email.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.address.id_for_label }}" class="form-label">
+                                <i class="bi bi-geo-alt"></i> Address
+                            </label>
+                            {{ form.address }}
+                            {% if form.address.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.address.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.zip_code.id_for_label }}" class="form-label">
+                                <i class="bi bi-pin-map"></i> ZIP Code
+                            </label>
+                            {{ form.zip_code }}
+                            {% if form.zip_code.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.zip_code.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.dietary_preferences.id_for_label }}" class="form-label">
+                                <i class="bi bi-heart"></i> Dietary Preferences
+                            </label>
+                            {{ form.dietary_preferences }}
+                            {% if form.dietary_preferences.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.dietary_preferences.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Any dietary restrictions, allergies, or preferences we should know about?</div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'donations:donation_list' %}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> 
+                                {% if user.recipient %}Update{% else %}Create{% endif %} Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Profile Benefits -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-info-circle"></i> Why Create a Recipient Profile?
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Request pickups:</strong> You'll be able to request food donations from donors
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Track requests:</strong> Keep track of all your pickup requests in one place
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Dietary preferences:</strong> Let donors know about any dietary restrictions
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Contact information:</strong> Donors can reach you to coordinate pickups
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Community building:</strong> Connect with local donors and build relationships
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Privacy Notice -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-shield-check"></i> Privacy & Safety
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">
+                        <strong>Your privacy is important to us.</strong> Your contact information will only be shared with donors 
+                        when you request a pickup. We recommend meeting in public places and following safety guidelines 
+                        when picking up donations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

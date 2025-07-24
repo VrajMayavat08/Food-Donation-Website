@@ -22,3 +22,6 @@ media/
 # Migrations (optional)
 **/migrations/*.pyc
 **/migrations/__pycache__/
+
+git add .
+git commit -m "Commit "

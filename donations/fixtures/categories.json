@@ -1,0 +1,74 @@
+[
+    {
+        "model": "donations.category",
+        "pk": 1,
+        "fields": {
+            "name": "Produce",
+            "description": "Fresh fruits and vegetables",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 2,
+        "fields": {
+            "name": "Dairy",
+            "description": "Milk, cheese, yogurt, and other dairy products",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 3,
+        "fields": {
+            "name": "Bakery",
+            "description": "Bread, pastries, and baked goods",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 4,
+        "fields": {
+            "name": "Prepared Food",
+            "description": "Ready-to-eat meals and cooked food",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 5,
+        "fields": {
+            "name": "Canned Goods",
+            "description": "Canned vegetables, fruits, and other preserved foods",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 6,
+        "fields": {
+            "name": "Frozen Foods",
+            "description": "Frozen vegetables, meats, and prepared meals",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 7,
+        "fields": {
+            "name": "Pantry Items",
+            "description": "Rice, pasta, beans, and other dry goods",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "donations.category",
+        "pk": 8,
+        "fields": {
+            "name": "Beverages",
+            "description": "Juices, sodas, and other drinks",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    }
+] 

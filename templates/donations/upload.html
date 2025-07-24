@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Photos - Food Rescue{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-camera"></i> Add Photos to Donation
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Donation Info -->
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading">Donation: {{ donation.title }}</h5>
+                        <p class="mb-2">{{ donation.description|truncatewords:20 }}</p>
+                        <small><i class="bi bi-box-seam"></i> {{ donation.quantity }} • <i class="bi bi-geo-alt"></i> {{ donation.zip_code }}</small>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.image.id_for_label }}" class="form-label">
+                                <i class="bi bi-image"></i> Select Photo *
+                            </label>
+                            {{ form.image }}
+                            {% if form.image.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.image.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                Supported formats: JPG, JPEG, PNG, GIF. Maximum file size: 5MB.
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.caption.id_for_label }}" class="form-label">
+                                <i class="bi bi-chat"></i> Caption (Optional)
+                            </label>
+                            {{ form.caption }}
+                            {% if form.caption.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.caption.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Add a brief description of the photo.</div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'donations:donation_detail' donation.pk %}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-upload"></i> Upload Photo
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Existing Photos -->
+            {% if donation.photos.all %}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-images"></i> Existing Photos ({{ donation.photos.count }})
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for photo in donation.photos.all %}
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.caption|default:donation.title }}" style="height: 200px; object-fit: cover;">
+                                        <div class="card-body">
+                                            {% if photo.caption %}
+                                                <p class="card-text small">{{ photo.caption }}</p>
+                                            {% endif %}
+                                            <small class="text-muted">{{ photo.uploaded_at|date:"M d, Y" }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Photo Guidelines -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightbulb"></i> Photo Guidelines
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Good lighting:</strong> Take photos in well-lit areas to show food clearly
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Show condition:</strong> Include close-ups to show the food's quality and freshness
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Include packaging:</strong> Show how the food is packaged or stored
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Multiple angles:</strong> Take photos from different angles for better representation
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Clear captions:</strong> Add descriptive captions to help recipients understand what they're getting
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

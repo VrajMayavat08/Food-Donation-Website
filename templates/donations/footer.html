@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Footer Links - Food Rescue{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-success mb-4">
+                <i class="bi bi-gear"></i> Manage Footer Links
+            </h1>
+            <p class="lead text-muted">Add and manage footer links for the website</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Add New Link Form -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-plus-circle"></i> Add New Link
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.label.id_for_label }}" class="form-label">
+                                <i class="bi bi-tag"></i> Link Label *
+                            </label>
+                            {{ form.label }}
+                            {% if form.label.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.label.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.url.id_for_label }}" class="form-label">
+                                <i class="bi bi-link-45deg"></i> URL *
+                            </label>
+                            {{ form.url }}
+                            {% if form.url.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.url.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.order.id_for_label }}" class="form-label">
+                                <i class="bi bi-sort-numeric-down"></i> Display Order
+                            </label>
+                            {{ form.order }}
+                            {% if form.order.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.order.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Lower numbers appear first</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                {{ form.is_active }}
+                                <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                    Active (visible on website)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Add Link
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Links -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-ul"></i> Current Footer Links ({{ footer_links.count }})
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if footer_links %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Label</th>
+                                        <th>URL</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for link in footer_links %}
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-secondary">{{ link.order }}</span>
+                                            </td>
+                                            <td>
+                                                <strong>{{ link.label }}</strong>
+                                            </td>
+                                            <td>
+                                                <a href="{{ link.url }}" target="_blank" class="text-decoration-none">
+                                                    {{ link.url|truncatechars:30 }}
+                                                    <i class="bi bi-box-arrow-up-right"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {% if link.is_active %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">Inactive</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">{{ link.created_at|date:"M d, Y" }}</small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{{ link.url }}" target="_blank" class="btn btn-outline-primary" title="View">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-outline-warning" title="Edit" disabled>
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" title="Delete" disabled>
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-inbox display-4 text-muted mb-3"></i>
+                            <h5 class="text-muted">No footer links yet</h5>
+                            <p class="text-muted">Add your first footer link using the form on the left.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Footer Preview -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-eye"></i> Footer Preview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="bg-dark text-white p-3 rounded">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Food Rescue</h6>
+                                <p class="text-muted small">Connecting surplus food with those who need it most.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Quick Links</h6>
+                                <ul class="list-unstyled">
+                                    {% for link in footer_links %}
+                                        {% if link.is_active %}
+                                            <li>
+                                                <a href="{{ link.url }}" class="text-muted text-decoration-none small">
+                                                    {{ link.label }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% empty %}
+                                        <li class="text-muted small">No active links</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                        <div class="text-center">
+                            <small class="text-muted">&copy; 2024 Food Rescue. All rights reserved.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

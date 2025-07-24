@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Status - {{ donation.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square"></i> Update Donation Status
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Donation Details</h5>
+                            <p><strong>Title:</strong> {{ donation.title }}</p>
+                            <p><strong>Category:</strong> {{ donation.category.name }}</p>
+                            <p><strong>Quantity:</strong> {{ donation.quantity }}</p>
+                            <p><strong>Current Status:</strong> 
+                                <span class="badge bg-{% if donation.status == 'available' %}success{% elif donation.status == 'reserved' %}warning{% elif donation.status == 'donated' %}info{% else %}secondary{% endif %}">
+                                    {{ donation.get_status_display }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Status Options</h5>
+                            <ul class="list-unstyled">
+                                <li><span class="badge bg-success">Available</span> - Ready for pickup</li>
+                                <li><span class="badge bg-warning">Reserved</span> - Someone has claimed it</li>
+                                <li><span class="badge bg-info">Donated</span> - Successfully given away</li>
+                                <li><span class="badge bg-secondary">Expired</span> - Past expiry date</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.status.id_for_label }}" class="form-label">
+                                <strong>New Status:</strong>
+                            </label>
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.status.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'donations:donation_detail' donation.pk %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Update Status
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

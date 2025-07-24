@@ -1,0 +1,530 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Food Rescue{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-plus"></i> Create Your Food Rescue Account
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="signupForm">
+                        {% csrf_token %}
+                        
+                        <!-- Account Type Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-people"></i> How do you want to use Food Rescue? *
+                            </label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check border rounded p-3 h-100" id="donorOption">
+                                        <input class="form-check-input" type="radio" name="account_type" value="donor" id="account_type_0" required>
+                                        <label class="form-check-label fw-bold" for="account_type_0">
+                                            <i class="bi bi-shop text-primary"></i> Donor
+                                        </label>
+                                        <p class="text-muted small mb-0">I want to donate food to help reduce waste and support my community</p>
+                                        <ul class="text-muted small mt-2 mb-0">
+                                            <li>Post food donations</li>
+                                            <li>Manage business information</li>
+                                            <li>Coordinate pickups</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check border rounded p-3 h-100" id="recipientOption">
+                                        <input class="form-check-input" type="radio" name="account_type" value="recipient" id="account_type_1" required>
+                                        <label class="form-check-label fw-bold" for="account_type_1">
+                                            <i class="bi bi-heart text-success"></i> Recipient
+                                        </label>
+                                        <p class="text-muted small mb-0">I want to receive food donations to help feed myself or my family</p>
+                                        <ul class="text-muted small mt-2 mb-0">
+                                            <li>Browse available donations</li>
+                                            <li>Request pickups</li>
+                                            <li>Set dietary preferences</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if form.account_type.errors %}
+                                <div class="text-danger small mt-2">
+                                    {% for error in form.account_type.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Basic Account Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-person-badge"></i> Basic Account Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                                <i class="bi bi-person"></i> First Name *
+                                            </label>
+                                            {{ form.first_name }}
+                                            {% if form.first_name.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.first_name.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                                <i class="bi bi-person"></i> Last Name *
+                                            </label>
+                                            {{ form.last_name }}
+                                            {% if form.last_name.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.last_name.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.username.id_for_label }}" class="form-label">
+                                        <i class="bi bi-person-badge"></i> Username *
+                                    </label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.username.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Choose a unique username for your account.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                        <i class="bi bi-envelope"></i> Email Address *
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.email.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                                <i class="bi bi-lock"></i> Password *
+                                            </label>
+                                            {{ form.password1 }}
+                                            {% if form.password1.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.password1.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                                <i class="bi bi-lock-fill"></i> Confirm Password *
+                                            </label>
+                                            {{ form.password2 }}
+                                            {% if form.password2.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.password2.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Donor Profile Fields -->
+                        <div class="card mb-4" id="donorFields" style="display: none;">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-shop"></i> Business Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info mb-4">
+                                    <i class="bi bi-info-circle"></i>
+                                    <strong>Donor Account:</strong> As a donor, you'll be able to post food donations, manage your listings, and coordinate pickups with recipients. Your business information helps recipients find and contact you.
+                                </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="{{ form.business_name.id_for_label }}" class="form-label">
+                                        <i class="bi bi-building"></i> Business Name *
+                                    </label>
+                                    {{ form.business_name }}
+                                    {% if form.business_name.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.business_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.business_type.id_for_label }}" class="form-label">
+                                        <i class="bi bi-tag"></i> Business Type *
+                                    </label>
+                                    {{ form.business_type }}
+                                    {% if form.business_type.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.business_type.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.contact_phone.id_for_label }}" class="form-label">
+                                                <i class="bi bi-telephone"></i> Business Phone *
+                                            </label>
+                                            {{ form.contact_phone }}
+                                            {% if form.contact_phone.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.contact_phone.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.contact_email.id_for_label }}" class="form-label">
+                                                <i class="bi bi-envelope"></i> Business Email *
+                                            </label>
+                                            {{ form.contact_email }}
+                                            {% if form.contact_email.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.contact_email.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label">
+                                        <i class="bi bi-geo-alt"></i> Business Address *
+                                    </label>
+                                    {{ form.address }}
+                                    {% if form.address.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.address.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.zip_code.id_for_label }}" class="form-label">
+                                                <i class="bi bi-pin-map"></i> ZIP Code *
+                                            </label>
+                                            {{ form.zip_code }}
+                                            {% if form.zip_code.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.zip_code.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.business_hours.id_for_label }}" class="form-label">
+                                                <i class="bi bi-clock"></i> Business Hours
+                                            </label>
+                                            {{ form.business_hours }}
+                                            {% if form.business_hours.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.business_hours.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.description.id_for_label }}" class="form-label">
+                                        <i class="bi bi-info-circle"></i> Business Description
+                                    </label>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.description.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recipient Profile Fields -->
+                        <div class="card mb-4" id="recipientFields" style="display: none;">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-heart"></i> Personal Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info mb-4">
+                                    <i class="bi bi-info-circle"></i>
+                                    <strong>Recipient Account:</strong> As a recipient, you'll be able to browse available donations, request pickups, and coordinate with donors. Your personal information helps donors arrange pickups and understand your needs.
+                                </div>
+                                <div class="mb-3">
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i>
+                                        <strong>Your Name:</strong> We'll use your first and last name from the basic account information above.
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.recipient_phone.id_for_label }}" class="form-label">
+                                                <i class="bi bi-telephone"></i> Phone Number
+                                            </label>
+                                            {{ form.recipient_phone }}
+                                            {% if form.recipient_phone.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.recipient_phone.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.recipient_email.id_for_label }}" class="form-label">
+                                                <i class="bi bi-envelope"></i> Email Address
+                                            </label>
+                                            {{ form.recipient_email }}
+                                            {% if form.recipient_email.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.recipient_email.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.recipient_address.id_for_label }}" class="form-label">
+                                        <i class="bi bi-geo-alt"></i> Address
+                                    </label>
+                                    {{ form.recipient_address }}
+                                    {% if form.recipient_address.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.recipient_address.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="{{ form.recipient_zip_code.id_for_label }}" class="form-label">
+                                                <i class="bi bi-pin-map"></i> ZIP Code
+                                            </label>
+                                            {{ form.recipient_zip_code }}
+                                            {% if form.recipient_zip_code.errors %}
+                                                <div class="text-danger small">
+                                                    {% for error in form.recipient_zip_code.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.dietary_preferences.id_for_label }}" class="form-label">
+                                        <i class="bi bi-heart"></i> Dietary Preferences
+                                    </label>
+                                    {{ form.dietary_preferences }}
+                                    {% if form.dietary_preferences.errors %}
+                                        <div class="text-danger small">
+                                            {% for error in form.dietary_preferences.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Any dietary restrictions, allergies, or preferences we should know about?</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-check-circle"></i> Create Account
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-0">
+                        Already have an account? 
+                        <a href="{% url 'donations:login' %}" class="text-decoration-none">Sign in here</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Benefits Card -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-star"></i> Why Join Food Rescue?
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">
+                                <i class="bi bi-shop"></i> For Donors
+                            </h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Reduce food waste and costs
+                                </li>
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Support your local community
+                                </li>
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Build positive business reputation
+                                </li>
+                                <li>
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Meet food safety requirements
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-success">
+                                <i class="bi bi-heart"></i> For Recipients
+                            </h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Access fresh, quality food
+                                </li>
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Save money on groceries
+                                </li>
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Connect with local businesses
+                                </li>
+                                <li>
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    Support sustainability efforts
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const donorOption = document.getElementById('donorOption');
+    const recipientOption = document.getElementById('recipientOption');
+    const donorFields = document.getElementById('donorFields');
+    const recipientFields = document.getElementById('recipientFields');
+    const donorRadio = document.getElementById('account_type_0');
+    const recipientRadio = document.getElementById('account_type_1');
+
+    function showFields() {
+        if (donorRadio.checked) {
+            donorFields.style.display = 'block';
+            recipientFields.style.display = 'none';
+            donorOption.classList.add('border-primary');
+            recipientOption.classList.remove('border-success');
+        } else if (recipientRadio.checked) {
+            recipientFields.style.display = 'block';
+            donorFields.style.display = 'none';
+            recipientOption.classList.add('border-success');
+            donorOption.classList.remove('border-primary');
+        } else {
+            donorFields.style.display = 'none';
+            recipientFields.style.display = 'none';
+            donorOption.classList.remove('border-primary');
+            recipientOption.classList.remove('border-success');
+        }
+    }
+
+    // Add click handlers to the option cards
+    donorOption.addEventListener('click', function() {
+        donorRadio.checked = true;
+        showFields();
+    });
+
+    recipientOption.addEventListener('click', function() {
+        recipientRadio.checked = true;
+        showFields();
+    });
+
+    // Add change handlers to the radio buttons
+    donorRadio.addEventListener('change', showFields);
+    recipientRadio.addEventListener('change', showFields);
+
+    // Show fields if one is already selected (e.g., on form validation error)
+    showFields();
+});
+</script>
+{% endblock %} 

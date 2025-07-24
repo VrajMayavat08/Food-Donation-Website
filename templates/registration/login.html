@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Food Rescue{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="bi bi-box-arrow-in-right"></i> Sign In
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">
+                                <i class="bi bi-person"></i> Username
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.password.id_for_label }}" class="form-label">
+                                <i class="bi bi-lock"></i> Password
+                            </label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                Your username and password didn't match. Please try again.
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign In
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-2">
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none">
+                            <i class="bi bi-question-circle"></i> Forgot your password?
+                        </a>
+                    </p>
+                    <p class="mb-0">
+                        Don't have an account? 
+                        <a href="{% url 'donations:signup' %}" class="text-decoration-none">Sign up here</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Welcome Back Card -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-heart"></i> Welcome Back!
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        Ready to continue making a difference in your community? 
+                        Sign in to post donations, request pickups, and connect with neighbors.
+                    </p>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <i class="bi bi-box-seam text-success display-6"></i>
+                            <p class="small text-muted">Post Donations</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-hand-index text-success display-6"></i>
+                            <p class="small text-muted">Request Pickups</p>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-people text-success display-6"></i>
+                            <p class="small text-muted">Build Community</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
