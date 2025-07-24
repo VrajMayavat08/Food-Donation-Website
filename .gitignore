@@ -1,0 +1,24 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django stuff
+*.log
+db.sqlite3
+.env
+
+# Virtual environment
+venv/
+
+# VS Code / PyCharm settings
+.vscode/
+.idea/
+
+# Static and media files
+staticfiles/
+media/
+
+# Migrations (optional)
+**/migrations/*.pyc
+**/migrations/__pycache__/
